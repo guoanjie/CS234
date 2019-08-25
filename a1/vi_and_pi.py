@@ -55,7 +55,14 @@ def policy_evaluation(P, nS, nA, policy, gamma=0.9, tol=1e-3):
 
 	############################
 	# YOUR IMPLEMENTATION HERE #
-
+	prev_value_function = tol * np.ones(nS)
+	while np.abs(value_function - prev_value_function).max() >= tol:
+		prev_value_function = value_function
+		value_function = np.zeros(nS)
+		for state in range(nS):
+			action = policy[state]
+			for probability, nextstate, reward, terminal in P[state][action]:
+				value_function[state] += probability * (reward + (0 if terminal else gamma * prev_value_function[nextstate]))
 
 	############################
 	return value_function
@@ -85,7 +92,12 @@ def policy_improvement(P, nS, nA, value_from_policy, policy, gamma=0.9):
 
 	############################
 	# YOUR IMPLEMENTATION HERE #
-
+	for state in range(nS):
+		value = np.zeros(nA)
+		for action in range(nA):
+			for probability, nextstate, reward, terminal in P[state][action]:
+				value[action] += probability * (reward + (0 if terminal else gamma * value_from_policy[nextstate]))
+		new_policy[state] = value.argmax()
 
 	############################
 	return new_policy
@@ -114,7 +126,12 @@ def policy_iteration(P, nS, nA, gamma=0.9, tol=10e-3):
 
 	############################
 	# YOUR IMPLEMENTATION HERE #
-
+	prev_value_function = np.zeros(nS)
+	value_function = tol * np.ones(nS)
+	while np.abs(value_function - prev_value_function).max() >= tol:
+		prev_value_function = value_function
+		value_function = policy_evaluation(P, nS, nA, policy, gamma=gamma, tol=tol)
+		policy = policy_improvement(P, nS, nA, value_function, policy, gamma=gamma)
 
 	############################
 	return value_function, policy
@@ -141,7 +158,17 @@ def value_iteration(P, nS, nA, gamma=0.9, tol=1e-3):
 	policy = np.zeros(nS, dtype=int)
 	############################
 	# YOUR IMPLEMENTATION HERE #
-
+	prev_value_function = tol * np.ones(nS)
+	while np.abs(value_function - prev_value_function).max() >= tol:
+		prev_value_function = value_function
+		value_function = np.zeros(nS)
+		for state in range(nS):
+			value = np.zeros(nA)
+			for action in range(nA):
+				for probability, nextstate, reward, terminal in P[state][action]:
+					value[action] += probability * (reward + (0 if terminal else gamma * prev_value_function[nextstate]))
+			value_function[state] = value.max()
+			policy[state] = value.argmax()
 
 	############################
 	return value_function, policy

@@ -94,7 +94,7 @@ class Linear(DQN):
         ################ YOUR CODE HERE - 2-3 lines ################## 
         
         flattened = layers.flatten(state, scope=scope)
-        out = layers.fully_connected(flattened, num_actions, reuse=reuse, scope=scope)
+        out = layers.fully_connected(flattened, num_actions, activation_fn=None, reuse=reuse, scope=scope)
 
         ##############################################################
         ######################## END YOUR CODE #######################
@@ -140,7 +140,7 @@ class Linear(DQN):
         
         collection = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=q_scope)
         target_collection = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=target_q_scope)
-        ops = [tf.assign(var, target_var) for var, target_var in zip(collection, target_collection)]
+        ops = [tf.assign(target_var, var) for var, target_var in zip(collection, target_collection)]
         self.update_target_op = tf.group(*ops)
 
         ##############################################################

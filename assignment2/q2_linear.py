@@ -93,8 +93,8 @@ class Linear(DQN):
         ##############################################################
         ################ YOUR CODE HERE - 2-3 lines ################## 
         
-        flattened = tf.contrib.layers.flatten(state, scope=scope)
-        out = tf.contrib.layers.fully_connected(flattened, num_actions, reuse=reuse, scope=scope)
+        flattened = layers.flatten(state, scope=scope)
+        out = layers.fully_connected(flattened, num_actions, reuse=reuse, scope=scope)
 
         ##############################################################
         ######################## END YOUR CODE #######################

@@ -41,7 +41,7 @@ class MaxAndSkipEnv(gym.Wrapper):
 
 class PreproWrapper(gym.Wrapper):
     """
-    Wrapper for Pong to apply preprocessing
+    Wrapper to apply preprocessing
     Stores the state into variable self.obs
     """
     def __init__(self, env, prepro, shape, overwrite_render=True, high=255):
@@ -97,4 +97,4 @@ class PreproWrapper(gym.Wrapper):
                 self.viewer.imshow(img)
 
         else:
-            super(PongWrapper, self)._render(mode, close)
+            super(PreproWrapper, self)._render(mode, close)

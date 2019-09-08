@@ -2,7 +2,6 @@ import tensorflow as tf
 import tensorflow.contrib.layers as layers
 
 from core.deep_q_learning import DQN
-import config
 
 
 class Linear(DQN):
@@ -18,10 +17,10 @@ class Linear(DQN):
         """
         state_shape = list(self.env.observation_space.shape)
 
-        self.s = tf.placeholder(tf.uint8, shape=(None, state_shape[0], state_shape[1], state_shape[2] * config.state_history), name="state")
+        self.s = tf.placeholder(tf.uint8, shape=(None, state_shape[0], state_shape[1], state_shape[2] * self.config.state_history), name="state")
         self.a = tf.placeholder(tf.int32, shape=(None,), name="action")
         self.r = tf.placeholder(tf.float32, shape=(None,), name="reward")
-        self.sp = tf.placeholder(tf.uint8, shape=(None, state_shape[0], state_shape[1], state_shape[2] * config.state_history), name="next_state")
+        self.sp = tf.placeholder(tf.uint8, shape=(None, state_shape[0], state_shape[1], state_shape[2] * self.config.state_history), name="next_state")
         self.done_mask = tf.placeholder(tf.bool, shape=(None,), name="done_mask")
         self.lr = tf.placeholder(tf.float32, shape=(), name="lr")
 
